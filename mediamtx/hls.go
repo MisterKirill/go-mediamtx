@@ -18,18 +18,18 @@ type HLSListResponse struct {
 	Items     []HLSMuxer
 }
 
-func (m MediamtxAPI) GetHLSMuxers() ([]HLSMuxer, error) {
+func (m MediamtxAPI) GetHLSMuxers() (HLSListResponse, error) {
 	resp, err := http.Get(m.apiUrl + "/v3/hlsmuxers/list")
 	if err != nil {
-		return nil, err
+		return HLSListResponse{}, err
 	}
 
 	var respBody HLSListResponse
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return nil, err
+		return HLSListResponse{}, err
 	}
 
-	return respBody.Items, nil
+	return respBody, nil
 }
 
 func (m MediamtxAPI) GetHLSMuxer(name string) (HLSMuxer, error) {

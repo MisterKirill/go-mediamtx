@@ -12,10 +12,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	paths, err := mediamtx.GetPaths()
+	response, err := mediamtx.GetPaths(100)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("%d people are streaming right now", len(paths))
+	log.Printf("%d people are streaming right now", response.ItemCount)
 }

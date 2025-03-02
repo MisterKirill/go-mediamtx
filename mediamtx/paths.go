@@ -2,6 +2,7 @@ package mediamtx
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -33,18 +34,18 @@ type PathsListResponse struct {
 	Items     []Path
 }
 
-func (m MediamtxAPI) GetPaths() ([]Path, error) {
-	resp, err := http.Get(m.apiUrl + "/v3/paths/list")
+func (m MediamtxAPI) GetPaths(itemsPerPage int) (PathsListResponse, error) {
+	resp, err := http.Get(fmt.Sprintf("%s/v3/paths/list?itemsPerPage=%d", m.apiUrl, itemsPerPage))
 	if err != nil {
-		return nil, err
+		return PathsListResponse{}, err
 	}
 
 	var respBody PathsListResponse
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return nil, err
+		return PathsListResponse{}, err
 	}
 
-	return respBody.Items, nil
+	return respBody, nil
 }
 
 func (m MediamtxAPI) GetPath(name string) (Path, error) {

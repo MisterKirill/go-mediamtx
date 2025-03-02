@@ -20,18 +20,18 @@ type RecordingsListResponse struct {
 	Items     []Recording
 }
 
-func (m MediamtxAPI) GetRecordings() ([]Recording, error) {
+func (m MediamtxAPI) GetRecordings() (RecordingsListResponse, error) {
 	resp, err := http.Get(m.apiUrl + "/v3/recordings/list")
 	if err != nil {
-		return nil, err
+		return RecordingsListResponse{}, err
 	}
 
 	var respBody RecordingsListResponse
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return nil, err
+		return RecordingsListResponse{}, err
 	}
 
-	return respBody.Items, nil
+	return respBody, nil
 }
 
 func (m MediamtxAPI) GetRecording(pathName string) (Recording, error) {

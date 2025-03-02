@@ -12,21 +12,21 @@ type HLSMuxer struct {
 	BytesSent   int
 }
 
-type HLSListResponse struct {
+type HLSMuxerListResponse struct {
 	PageCount int
 	ItemCount int
 	Items     []HLSMuxer
 }
 
-func (m MediamtxAPI) GetHLSMuxers() (HLSListResponse, error) {
+func (m MediamtxAPI) GetHLSMuxers() (HLSMuxerListResponse, error) {
 	resp, err := http.Get(m.apiUrl + "/v3/hlsmuxers/list")
 	if err != nil {
-		return HLSListResponse{}, err
+		return HLSMuxerListResponse{}, err
 	}
 
-	var respBody HLSListResponse
+	var respBody HLSMuxerListResponse
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return HLSListResponse{}, err
+		return HLSMuxerListResponse{}, err
 	}
 
 	return respBody, nil
